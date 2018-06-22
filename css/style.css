@@ -1,27 +1,204 @@
+/**** css/style.css ***/
 body {
     text-align: center;
     margin: 0;
 }
 
-.todo-app {
-    width: 96%;
-    display: inline-block;
-}
-
-input {
+/* input {
     width: 90%;
-}
+} */
 
-li {
+/* li {
     text-align: left;
     height: 3rem;
     border: 1px solid;
-}
+} */
 
+/* not used because button was deprecated
 .todo-item {
     overflow: hidden;
 }
 
 .del-btn {
     float: right;
+} */
+
+/* newly added */
+
+* {
+    box-sizing: border-box;
+}
+
+/* basic stylings ------------------------------------------ */
+.container {
+    /* font-family: 'Roboto'; */
+    /* width:600px;  */
+    margin: 30px auto 0;
+    padding: 10px 50px 50px;
+    /* text-align: center; */
+}
+
+h1 {
+    /* text-align: center; */
+    margin-bottom: 50px;
+}
+
+/* .footer {
+    text-align: center;
+} */
+
+
+.footer {
+    margin-top: 4rem;
+    display: inline-block;
+    width: 90%;
+}
+
+/* hr {
+    color: #757575;
+} */
+.footer a {
+    color: #53B2C8;
+}
+
+/* form starting stylings ------------------------------- */
+.group {
+    position: relative;
+    margin-bottom: 45px;
+    /* text-align: center; */
+    display: inline-block;
+    width: 85%;
+}
+
+input {
+    font-size: 18px;
+    padding: 10px 10px 10px 5px;
+    display: block;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #757575;
+}
+
+input:focus {
+    outline: none;
+}
+
+/* LABEL ======================================= */
+label {
+    color: #999;
+    font-size: 18px;
+    font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    left: 5px;
+    top: 10px;
+    transition: 0.2s ease all;
+    -moz-transition: 0.2s ease all;
+    -webkit-transition: 0.2s ease all;
+}
+
+/* active state */
+input:focus ~ label, input:valid ~ label {
+    top: -20px;
+    font-size: 14px;
+    color: #5264AE;
+}
+
+/* BOTTOM BARS ================================= */
+.bar {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+.bar:before, .bar:after {
+    content: '';
+    height: 2px;
+    width: 0;
+    bottom: 1px;
+    position: absolute;
+    background: #5264AE;
+    transition: 0.2s ease all;
+    -moz-transition: 0.2s ease all;
+    -webkit-transition: 0.2s ease all;
+}
+
+.bar:before {
+    left: 50%;
+}
+
+.bar:after {
+    right: 50%;
+}
+
+/* active state */
+input:focus ~ .bar:before, input:focus ~ .bar:after {
+    width: 50%;
+}
+
+/* HIGHLIGHTER ================================== */
+.highlight {
+    position: absolute;
+    height: 60%;
+    width: 100px;
+    top: 25%;
+    left: 0;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+/* active state */
+input:focus ~ .highlight {
+    -webkit-animation: inputHighlighter 0.3s ease;
+    -moz-animation: inputHighlighter 0.3s ease;
+    animation: inputHighlighter 0.3s ease;
+}
+
+/* newly added */
+
+ul {
+    padding: 0;
+    margin: 0;
+    width: 90%;
+    display: inline-block;
+}
+/* newly added 2 */
+html, body {
+    /* height: 100%; */
+    /* background: #efefef; */
+    /* text-align: center; */
+}
+  
+  /* .title {
+    font-size: 3em;
+    font-family: "Helvetica Naue", Ubuntu, sans-serif;
+  } */
+  
+  /* .container {
+    width: 600px;
+    margin: auto;
+  } */
+  
+.todo-item {
+    background: #fff;
+    box-shadow: 0 1px 2px #999;
+    font-family: sans-serif;
+    /* height: 50px; */
+    text-align: left;
+    line-height: 20px;
+    list-style: none;
+    margin: 5px 0;
+    padding: 15px;
+    /* text-align: center; */
+    transform: translateZ(0);
+    transition: box-shadow 0.25s ease-in;
+    /* width: 80%; */
+    /* &:hover {
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+    } */
+}
+/* newly added 2 */
+
+@media only screen and (max-width: 600px) {
 }

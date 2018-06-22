@@ -10,16 +10,32 @@
 </head>
 
 <body>
-    <div class="todo-app">
+    <div class="todo-app container">
+
         <div class="header">
-            <h1>todos</h1>
+            <h1>My Todo List</h1>
             <div>
-                <input type="text" class="new-item">
+                <div class="group">
+                    <input type="text" required class="new-item">
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    <label>New Todo</label>
+                </div>
             </div>
         </div>
+
         <div class="main">
             <ul class="todo-list"></ul>
         </div>
+
+
+        <div class="footer">
+            <!-- <hr> -->
+            a simple todo list made by
+            <a href="https://github.com/Charles-Xie">Chi Xie</a>
+            <br> following the MVC pattern.
+        </div>
+
     </div>
     <script src="./js/utils.js"></script>
     <script src="./js/app.js"></script>
