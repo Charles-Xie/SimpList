@@ -15,3 +15,11 @@ input {
 li {
     text-align: left;
 }
+
+.todo-item {
+    overflow: hidden;
+}
+
+.del-btn {
+    float: right;
+}

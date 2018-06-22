@@ -2,6 +2,7 @@
     function TodoView() {
         this.todoList = $('.todo-list');
         this.newItem = $('.new-item');
+        this.swipeHandler = null;
     };
 
     TodoView.prototype.bind = function (event, handler) {
@@ -12,6 +13,9 @@
                     handler(self.newItem.value);
                 }
             });
+        }
+        if (event === 'delete') {
+            this.swipeHandler = handler;
         }
     };
 
@@ -25,6 +29,16 @@
             class: 'todo-item',
             text: newItemValue
         });
+        // add delete button for the new todo item
+        var delBtn = $new('button', {
+            class: 'del-btn',
+            text: 'X'
+        });
+        delBtn.addEventListener('click', function () {
+            console.log('button clicked');
+            alert('button clicked');
+        })
+        newElement.appendChild(delBtn);
         self.todoList.appendChild(newElement);
     };
 
@@ -71,6 +85,7 @@
         self.view = view;
         self.model = model;
 
+        // bind the "add" operation of view and model
         self.view.bind('add', function (newItemValue) {
             // console.log("new item", newItemValue);
             // add this new item into model
@@ -80,6 +95,13 @@
             // and clear the input
             self.view.clearInput();
         });
+
+        // bind the "delete" operation of view and model
+        self.view.bind('delete', function () {
+            self.model.deleteItem();
+            self.view.deleteItem();
+        });
+
 
         self.view.showAll(self.model.getAllItems());
     };
