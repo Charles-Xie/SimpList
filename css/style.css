@@ -44,7 +44,7 @@ h1 {
     width: 85%;
 }
 
-input {
+.new-item, .editable {
     font-size: 18px;
     padding: 10px 10px 10px 5px;
     display: block;
@@ -53,9 +53,10 @@ input {
     border-bottom: 1px solid #757575;
 }
 
-input:focus {
+.new-item:focus, .editable:focus {
     outline: none;
 }
+
 
 /* new item input label */
 label {
@@ -72,7 +73,7 @@ label {
 }
 
 /* active state */
-input:focus ~ label, input:valid ~ label {
+.new-item:focus ~ label, .new-item:valid ~ label {
     top: -20px;
     font-size: 14px;
     color: #5264AE;
@@ -106,7 +107,7 @@ input:focus ~ label, input:valid ~ label {
 }
 
 /* active state */
-input:focus ~ .bar:before, input:focus ~ .bar:after {
+.new-item:focus ~ .bar:before, .new-item:focus ~ .bar:after {
     width: 50%;
 }
 
@@ -122,7 +123,7 @@ input:focus ~ .bar:before, input:focus ~ .bar:after {
 }
 
 /* active state */
-input:focus ~ .highlight {
+.new-item:focus ~ .highlight {
     -webkit-animation: inputHighlighter 0.3s ease;
     -moz-animation: inputHighlighter 0.3s ease;
     animation: inputHighlighter 0.3s ease;

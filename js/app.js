@@ -1,4 +1,5 @@
 (function (window) {
+    'use strict';
     function TodoView() {
         // web view widget
         this.todoList = $('.todo-list');
@@ -6,9 +7,14 @@
         this.finishAllBtn = $('.finish-all');
         this.removeCompBtn = $('.remove-completed');
 
-        this.swipeHandler = null;
+        this.swipeLeftHandler = null;
         this.checkHandler = null;
+        this.swipeRightHandler = null;
+        this.editDoneHandler = null;
         this.toggleCompleteRecord = true;
+
+        // put the item being edited
+        this.editedItem = null;
     };
 
     /**
@@ -16,7 +22,7 @@
      * @param {string} event different types of events to bind
      * @param {function} handler the function to bind with the view
      */
-    TodoView.prototype.bind = function (event, handler) {
+    TodoView.prototype.bind = function (event, handler, callback) {
         var self = this;
         switch (event) {
             case 'add':
@@ -28,7 +34,7 @@
                 break;
 
             case 'delete':
-                self.swipeHandler = handler;
+                self.swipeLeftHandler = handler;
                 break;
 
             case 'check':
@@ -47,6 +53,11 @@
                 self.removeCompBtn.addEventListener('click', function () {
                     handler();
                 })
+                break;
+
+            case 'edit':
+                self.swipeRightHandler = handler;
+                self.editDoneHandler = callback;
                 break;
         }
     };
@@ -68,6 +79,7 @@
         });
         // add complete checkbox
         complete = complete ? true : false;
+
         var newCheckbox = $new('input', {
             type: 'checkbox',
             class: 'complete-checkbox',
@@ -77,6 +89,7 @@
             self.checkHandler(event.target.parentElement.textContent, event.target.checked);
         })
         newElement.insertBefore(newCheckbox, newElement.childNodes[0]);
+
         // add delete button for the new todo item
         // var delBtn = $new('button', {
         //     class: 'del-btn',
@@ -87,6 +100,7 @@
         //     alert('button clicked');
         // });
         // newElement.appendChild(delBtn);
+
         var addSwipeDeleteFunc = function (ele) {
             var xDown = null;
             var yDown = null;
@@ -111,12 +125,13 @@
                     if (xDiff > 0) {
                         // swipe to left
                         console.log('swipe to left');
-                        self.swipeHandler(event.target);
+                        self.swipeLeftHandler(event.target);
                         // console.log('swipe occurs on', event.target.tagName);
                     }
                     else if (xDiff < 0) {
                         // swipe to right
                         console.log('swipe to right');
+                        self.swipeRightHandler(event.target);
                     }
                 }
                 // reset x and y
@@ -172,6 +187,42 @@
                 self.todoList.removeChild(box.parentElement);
             }
         })
+    };
+
+    TodoView.prototype.makeItemEditable = function (item) {
+        var self = this;
+        var box = item.childNodes[0];
+        var text = item.childNodes[1];
+        console.log('item', item);
+        item.removeChild(box);
+        item.removeChild(text);
+        var editable = $new('input', {
+            class: 'editable',
+            type: 'text'
+        });
+        item.appendChild(editable);
+        editable.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                console.log('edit finish');
+                // compare, save, restore
+                item.removeChild(editable);
+                console.log('box', box);
+                console.log('text', text);
+                item.appendChild(box);
+                console.log('item', item);
+                var editedText = editable.value.trim();
+                console.log('edited text', editedText);
+                item.appendChild(text);
+                if (editedText !== '') {
+                    // update model
+                    self.editDoneHandler(item.textContent, editedText)
+                    // update view
+                    // item.textContent = editedText;
+                    item.appendChild(text);
+                    text.textContent = editedText;
+                }
+            }
+        });
     };
 
 
@@ -248,7 +299,7 @@
     TodoModel.prototype.removeCompleted = function () {
         var backup = [];
         while (this.todoItems.length > 0) {
-            item = this.todoItems.pop();
+            var item = this.todoItems.pop();
             if (!item.complete) {
                 backup.push(item);
             }
@@ -257,7 +308,20 @@
         // save
         this.store();
     };
-    
+
+    TodoModel.prototype.replaceEdited = function (textOld, textNew) {
+        console.log('replaceEdited() called', textOld, textNew);
+        for (var i = 0; i < this.todoItems.length; i++) {
+            if (this.todoItems[i].value === textOld) {
+                this.todoItems[i].value = textNew;
+                break;
+            }
+        }
+        console.log('relace find', i);
+        console.log('updated model', this.todoItems);
+        this.store();
+    };
+
 
 
 
@@ -297,6 +361,17 @@
             self.view.removeCompleted();
             self.model.removeCompleted();
         });
+
+        self.view.bind(
+            'edit',
+            function (item) {
+                self.view.makeItemEditable(item);
+                // self.model.replaceEdited(textOld, textNew);
+            },
+            function (textOld, textNew) {
+                self.model.replaceEdited(textOld, textNew);
+            }
+        );
 
 
         self.view.showAll(self.model.getAllItems());
