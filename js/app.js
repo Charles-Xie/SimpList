@@ -5,6 +5,11 @@
         this.swipeHandler = null;
     };
 
+    /**
+     * bind some behavior with the view
+     * @param {string} event different types of events to bind
+     * @param {function} handler the function to bind with the view
+     */
     TodoView.prototype.bind = function (event, handler) {
         var self = this;
         if (event === 'add') {
@@ -20,25 +25,66 @@
     };
 
     TodoView.prototype.addNewItem = function (newItemValue) {
+        var self = this;
         newItemValue = newItemValue.trim();
         if (newItemValue === '') {
             return;
         }
-        var self = this;
         var newElement = $new('li', {
             class: 'todo-item',
             text: newItemValue
         });
         // add delete button for the new todo item
-        var delBtn = $new('button', {
-            class: 'del-btn',
-            text: 'X'
-        });
-        delBtn.addEventListener('click', function () {
-            console.log('button clicked');
-            alert('button clicked');
-        })
-        newElement.appendChild(delBtn);
+        // var delBtn = $new('button', {
+        //     class: 'del-btn',
+        //     text: 'X'
+        // });
+        // delBtn.addEventListener('click', function () {
+        //     console.log('button clicked');
+        //     alert('button clicked');
+        // });
+        // newElement.appendChild(delBtn);
+        var addSwipeDeleteFunc = function (ele) {
+            var xDown = null;
+            var yDown = null;
+            var handleTouchStart = function (event) {
+                // console.log('touch start');
+                xDown = event.touches[0].clientX;
+                yDown = event.touches[0].clientY;
+                // console.log('xDown', xDown);
+            };
+            var handleTouchMove = function (event) {
+                if (!xDown || !yDown) {
+                    return;
+                }
+                var xUp = event.touches[0].clientX;
+                var yUp = event.touches[0].clientY;
+                // console.log('xUp', xUp);
+                var xDiff = xDown - xUp;
+                var yDiff = yDown - yUp;
+                console.log('xDiff', xDiff, 'yDiff', yDiff);
+                if (Math.abs(xDiff) > Math.abs(yDiff)) {
+                    // can be judged as horizontal swipe
+                    if (xDiff > 0) {
+                        // swipe to left
+                        console.log('swipe to left');
+                        self.swipeHandler(event.target);
+                        // console.log('swipe occurs on', event.target.tagName);
+                    }
+                    else if (xDiff < 0) {
+                        // swipe to right
+                        console.log('swipe to right');
+                    }
+                }
+                // reset x and y
+                xDown = null;
+                yDown = null;
+            };
+            ele.addEventListener('touchstart', handleTouchStart, false);
+            ele.addEventListener('touchmove', handleTouchMove, false);
+        };
+        addSwipeDeleteFunc(newElement);
+
         self.todoList.appendChild(newElement);
     };
 
@@ -53,9 +99,21 @@
         });
     };
 
+    /**
+     * remove a todo item from DOM
+     * @param {DOM element} ele 
+     */
+    TodoView.prototype.deleteItem = function (ele) {
+        ele.parentElement.removeChild(ele);
+    };
 
 
 
+
+
+    /**
+     * the model of todo list
+     */
     function TodoModel() {
         this.todoItems = JSON.parse(localStorage.getItem('todo')) || [];
     };
@@ -71,14 +129,34 @@
             active: true
         });
         // store data into localStorage
-        localStorage.setItem('todo', JSON.stringify(this.todoItems));
+        this.store();
     };
+
+    /**
+     * put todo items array into localStorage
+     */
+    TodoModel.prototype.store = function () {
+        localStorage.setItem('todo', JSON.stringify(this.todoItems));
+    }
 
     TodoModel.prototype.getAllItems = function () {
         // return a copy of the todo items
         // this is actually not so meaningful, as you can still access this.todoItems
         return this.todoItems.slice();
     };
+
+    TodoModel.prototype.deleteItem = function (itemText) {
+        var i = 0;
+        for (i = 0; i < this.todoItems.length; i++) {
+            if (this.todoItems[i].value === itemText) {
+                break;
+            }
+        }
+        this.todoItems.splice(i, 1);
+        this.store();
+    };
+
+
 
     function TodoController(view, model) {
         var self = this;
@@ -97,9 +175,9 @@
         });
 
         // bind the "delete" operation of view and model
-        self.view.bind('delete', function () {
-            self.model.deleteItem();
-            self.view.deleteItem();
+        self.view.bind('delete', function (deleteElement) {
+            self.model.deleteItem(deleteElement.textContent);
+            self.view.deleteItem(deleteElement);
         });
 
 
