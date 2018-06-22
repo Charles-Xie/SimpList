@@ -1,0 +1,17 @@
+body {
+    text-align: center;
+    margin: 0;
+}
+
+.todo-app {
+    width: 96%;
+    display: inline-block;
+}
+
+input {
+    width: 90%;
+}
+
+li {
+    text-align: left;
+}
