@@ -20,6 +20,12 @@
         if (options.id) {
             element.id = options.id;
         }
+        if (tag === 'input' && options.type) {
+            element.type = options.type;
+            if (options.type === 'checkbox' && options.checked) {
+                element.checked = options.checked;
+            }
+        }
         return element;
     }
 

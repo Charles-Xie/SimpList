@@ -3,6 +3,7 @@
         this.todoList = $('.todo-list');
         this.newItem = $('.new-item');
         this.swipeHandler = null;
+        this.checkHandler = null;
     };
 
     /**
@@ -20,11 +21,19 @@
             });
         }
         if (event === 'delete') {
-            this.swipeHandler = handler;
+            self.swipeHandler = handler;
+        }
+        if (event === 'check') {
+            self.checkHandler = handler;
         }
     };
 
-    TodoView.prototype.addNewItem = function (newItemValue) {
+    /**
+     * 
+     * @param {string} newItemValue the new todo item content
+     * @param {boolean} complete item complete or not, false by default
+     */
+    TodoView.prototype.addNewItem = function (newItemValue, complete) {
         var self = this;
         newItemValue = newItemValue.trim();
         if (newItemValue === '') {
@@ -34,6 +43,17 @@
             class: 'todo-item',
             text: newItemValue
         });
+        // add complete checkbox
+        complete = complete ? true : false;
+        var newCheckbox = $new('input', {
+            type: 'checkbox',
+            class: 'complete-checkbox',
+            checked: complete
+        });
+        newCheckbox.addEventListener('change', function (event) {
+            self.checkHandler(event.target.parentElement.textContent, event.target.checked);
+        })
+        newElement.insertBefore(newCheckbox, newElement.childNodes[0]);
         // add delete button for the new todo item
         // var delBtn = $new('button', {
         //     class: 'del-btn',
@@ -95,7 +115,7 @@
     TodoView.prototype.showAll = function (allItems) {
         var self = this;
         allItems.forEach(function (item) {
-            self.addNewItem(item.value);
+            self.addNewItem(item.value, item.complete);
         });
     };
 
@@ -126,7 +146,7 @@
         }
         this.todoItems.push({
             value: newItemValue,
-            active: true
+            complete: false
         });
         // store data into localStorage
         this.store();
@@ -156,6 +176,17 @@
         this.store();
     };
 
+    TodoModel.prototype.changeItemComplete = function (itemText, complete) {
+        var i = 0;
+        for (i = 0; i < this.todoItems.length; i++) {
+            if (this.todoItems[i].value === itemText) {
+                break;
+            }
+        }
+        this.todoItems[i].complete = complete;
+        this.store();
+    }
+
 
 
     function TodoController(view, model) {
@@ -178,6 +209,15 @@
         self.view.bind('delete', function (deleteElement) {
             self.model.deleteItem(deleteElement.textContent);
             self.view.deleteItem(deleteElement);
+        });
+
+        // bind the "complete" operation of view and model
+        self.view.bind('check', function (itemValue, complete) {
+            self.model.changeItemComplete(itemValue, complete);
+        });
+
+        self.view.bind('finishAll', function() {
+            
         });
 
 

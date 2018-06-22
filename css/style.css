@@ -163,21 +163,6 @@ ul {
     display: inline-block;
 }
 /* newly added 2 */
-html, body {
-    /* height: 100%; */
-    /* background: #efefef; */
-    /* text-align: center; */
-}
-  
-  /* .title {
-    font-size: 3em;
-    font-family: "Helvetica Naue", Ubuntu, sans-serif;
-  } */
-  
-  /* .container {
-    width: 600px;
-    margin: auto;
-  } */
   
 .todo-item {
     background: #fff;
@@ -187,7 +172,7 @@ html, body {
     text-align: left;
     line-height: 20px;
     list-style: none;
-    margin: 5px 0;
+    margin: 10px 0;
     padding: 15px;
     /* text-align: center; */
     transform: translateZ(0);
@@ -199,6 +184,120 @@ html, body {
     } */
 }
 /* newly added 2 */
+
+
+/* newly added 3 */
+/* button  */
+.button {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    margin: 0 auto;
+    width: 200px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    color: #fff;
+    background: #2ecc72;
+    box-shadow: 0px 3px 8px rgba(0,0,0,.3);
+    border-bottom: 1px solid #33a363;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.25s cubic-bezier(0.645,0.045,0.355,1);
+    &: after {
+      content:'';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    margin: 0 auto;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    opacity: 0;
+    transform: translateY(-50%);
+    background-color: #30b566;
+    transition: all 0.2s cubic-bezier(0.645,0.045,0.355,1);
+}
+    
+    &:active {
+    box-shadow: none;
+    &: after {
+        opacity: 1;
+    transform-origin: 50% 50%;
+    transform: scale(12) translateZ(0);
+}
+    }
+
+span {
+    position: relative;
+    z-index: 2;
+    text-transform: uppercase;
+}
+  }
+/* newly added 3 */
+
+
+/* newly added 5 */
+.complete-checkbox[disabled],
+  .complete-checkbox[disabled] + label {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.material-title {
+    font-size: 1.8em;
+    margin: 1em 0;
+}
+
+.complete-checkbox {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    border: 0.15em solid currentColor;
+    color: rgba(0,0,0,0.54);
+    padding: 0.5em;
+    border-radius: 0.2em;
+    display: inline-block;
+    vertical-align: middle;
+    transition: 0.4s ease background, 0.1s ease transform;
+    position: relative;
+    width: 10px;
+}
+
+.complete-checkbox:before {
+    content: "";
+    transition: inherit;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    background: #3042a6;
+    opacity: 0.4;
+    border-radius: 50%;
+    -webkit-transform-origin: 100% 100%;
+    transform-origin: 100% 100%;
+}
+
+.complete-checkbox:checked {
+    background: #3f51b5 url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcKICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIgogICB4bWxuczpjYz0iaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvbnMjIgogICB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiCiAgIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgdmVyc2lvbj0iMS4xIgogICB2aWV3Qm94PSIwIDAgMSAxIgogICBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWluWU1pbiBtZWV0Ij4KICA8cGF0aAogICAgIGQ9Ik0gMC4wNDAzODA1OSwwLjYyNjc3NjcgMC4xNDY0NDY2MSwwLjUyMDcxMDY4IDAuNDI5Mjg5MzIsMC44MDM1NTMzOSAwLjMyMzIyMzMsMC45MDk2MTk0MSB6IE0gMC4yMTcxNTcyOSwwLjgwMzU1MzM5IDAuODUzNTUzMzksMC4xNjcxNTcyOSAwLjk1OTYxOTQxLDAuMjczMjIzMyAwLjMyMzIyMzMsMC45MDk2MTk0MSB6IgogICAgIGlkPSJyZWN0Mzc4MCIKICAgICBzdHlsZT0iZmlsbDojZmZmZmZmO2ZpbGwtb3BhY2l0eToxO3N0cm9rZTpub25lIiAvPgo8L3N2Zz4K");
+}
+
+.complete-checkbox:active:before {
+    -webkit-transform: scale(2);
+    transform: scale(2);
+}
+
+.complete-checkbox-label {
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+}
+  
+/* newly added 5 */
 
 @media only screen and (max-width: 600px) {
 }
