@@ -1,9 +1,14 @@
 (function (window) {
     function TodoView() {
+        // web view widget
         this.todoList = $('.todo-list');
         this.newItem = $('.new-item');
+        this.finishAllBtn = $('.finish-all');
+        this.removeCompBtn = $('.remove-completed');
+
         this.swipeHandler = null;
         this.checkHandler = null;
+        this.toggleCompleteRecord = true;
     };
 
     /**
@@ -13,18 +18,36 @@
      */
     TodoView.prototype.bind = function (event, handler) {
         var self = this;
-        if (event === 'add') {
-            self.newItem.addEventListener('keydown', function (event) {
-                if (event.key === 'Enter') {
-                    handler(self.newItem.value);
-                }
-            });
-        }
-        if (event === 'delete') {
-            self.swipeHandler = handler;
-        }
-        if (event === 'check') {
-            self.checkHandler = handler;
+        switch (event) {
+            case 'add':
+                self.newItem.addEventListener('keydown', function (event) {
+                    if (event.key === 'Enter') {
+                        handler(self.newItem.value);
+                    }
+                });
+                break;
+
+            case 'delete':
+                self.swipeHandler = handler;
+                break;
+
+            case 'check':
+                self.checkHandler = handler;
+                break;
+
+            case 'finishAll':
+                self.finishAllBtn.addEventListener('click', function () {
+                    // alert("Are you sure?");
+                    handler(self.toggleCompleteRecord);
+                    self.toggleCompleteRecord = !self.toggleCompleteRecord;
+                });
+                break;
+
+            case 'removeCompleted':
+                self.removeCompBtn.addEventListener('click', function () {
+                    handler();
+                })
+                break;
         }
     };
 
@@ -128,6 +151,30 @@
     };
 
 
+    /**
+     * set all todos on the screen as finished (or all unfinished)
+     * @param {boolean} completeOrCancel 
+     */
+    TodoView.prototype.toggleCompleteAll = function (completeOrCancel) {
+        $all('.complete-checkbox').forEach(function (completeBox) {
+            // console.log(todoItem.textContent);
+            // console.log($('.complete-checkbox', todoItem).checked);
+            completeBox.checked = completeOrCancel;
+        });
+    };
+
+    TodoView.prototype.removeCompleted = function () {
+        var self = this;
+        $all('.complete-checkbox').forEach(function (box) {
+            if (box.checked === true) {
+                console.log(box.parentElement.textContent);
+                // remove element
+                self.todoList.removeChild(box.parentElement);
+            }
+        })
+    };
+
+
 
 
 
@@ -187,6 +234,31 @@
         this.store();
     }
 
+    /**
+     * set all todos stored as finished (or all unfinished)
+     */
+    TodoModel.prototype.toggleCompleteAll = function (completeOrCancel) {
+        this.todoItems.forEach(function (item) {
+            item.complete = completeOrCancel;
+        });
+        this.store();
+    };
+
+
+    TodoModel.prototype.removeCompleted = function () {
+        var backup = [];
+        while (this.todoItems.length > 0) {
+            item = this.todoItems.pop();
+            if (!item.complete) {
+                backup.push(item);
+            }
+        }
+        this.todoItems = backup.reverse();
+        // save
+        this.store();
+    };
+    
+
 
 
     function TodoController(view, model) {
@@ -216,8 +288,14 @@
             self.model.changeItemComplete(itemValue, complete);
         });
 
-        self.view.bind('finishAll', function() {
-            
+        self.view.bind('finishAll', function (toggle) {
+            self.view.toggleCompleteAll(toggle);
+            self.model.toggleCompleteAll(toggle);
+        });
+
+        self.view.bind('removeCompleted', function () {
+            self.view.removeCompleted();
+            self.model.removeCompleted();
         });
 
 

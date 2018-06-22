@@ -4,32 +4,11 @@ body {
     margin: 0;
 }
 
-/* input {
-    width: 90%;
-} */
-
-/* li {
-    text-align: left;
-    height: 3rem;
-    border: 1px solid;
-} */
-
-/* not used because button was deprecated
-.todo-item {
-    overflow: hidden;
-}
-
-.del-btn {
-    float: right;
-} */
-
-/* newly added */
-
 * {
     box-sizing: border-box;
 }
 
-/* basic stylings ------------------------------------------ */
+/* basic stylings */
 .container {
     /* font-family: 'Roboto'; */
     /* width:600px;  */
@@ -39,14 +18,9 @@ body {
 }
 
 h1 {
-    /* text-align: center; */
     margin-bottom: 50px;
+    color: #292783;
 }
-
-/* .footer {
-    text-align: center;
-} */
-
 
 .footer {
     margin-top: 4rem;
@@ -61,7 +35,7 @@ h1 {
     color: #53B2C8;
 }
 
-/* form starting stylings ------------------------------- */
+/* new item input group */
 .group {
     position: relative;
     margin-bottom: 45px;
@@ -83,7 +57,7 @@ input:focus {
     outline: none;
 }
 
-/* LABEL ======================================= */
+/* new item input label */
 label {
     color: #999;
     font-size: 18px;
@@ -104,7 +78,7 @@ input:focus ~ label, input:valid ~ label {
     color: #5264AE;
 }
 
-/* BOTTOM BARS ================================= */
+/* input bottom bar */
 .bar {
     position: relative;
     display: block;
@@ -136,7 +110,7 @@ input:focus ~ .bar:before, input:focus ~ .bar:after {
     width: 50%;
 }
 
-/* HIGHLIGHTER ================================== */
+/* highlight */
 .highlight {
     position: absolute;
     height: 60%;
@@ -154,16 +128,15 @@ input:focus ~ .highlight {
     animation: inputHighlighter 0.3s ease;
 }
 
-/* newly added */
-
-ul {
+/* todo list part */
+.todo-list {
     padding: 0;
     margin: 0;
     width: 90%;
     display: inline-block;
+    margin: 0 0 20px 0;
 }
-/* newly added 2 */
-  
+
 .todo-item {
     background: #fff;
     box-shadow: 0 1px 2px #999;
@@ -174,81 +147,15 @@ ul {
     list-style: none;
     margin: 10px 0;
     padding: 15px;
-    /* text-align: center; */
     transform: translateZ(0);
     transition: box-shadow 0.25s ease-in;
-    /* width: 80%; */
-    /* &:hover {
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-      cursor: pointer;
-    } */
 }
-/* newly added 2 */
 
-
-/* newly added 3 */
-/* button  */
-.button {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 50%;
-    margin: 0 auto;
-    width: 200px;
-    height: 50px;
-    line-height: 50px;
-    text-align: center;
-    color: #fff;
-    background: #2ecc72;
-    box-shadow: 0px 3px 8px rgba(0,0,0,.3);
-    border-bottom: 1px solid #33a363;
-    cursor: pointer;
-    overflow: hidden;
-    transition: all 0.25s cubic-bezier(0.645,0.045,0.355,1);
-    &: after {
-      content:'';
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 50%;
-    margin: 0 auto;
-    height: 20px;
-    width: 20px;
-    border-radius: 50%;
-    opacity: 0;
-    transform: translateY(-50%);
-    background-color: #30b566;
-    transition: all 0.2s cubic-bezier(0.645,0.045,0.355,1);
-}
-    
-    &:active {
-    box-shadow: none;
-    &: after {
-        opacity: 1;
-    transform-origin: 50% 50%;
-    transform: scale(12) translateZ(0);
-}
-    }
-
-span {
-    position: relative;
-    z-index: 2;
-    text-transform: uppercase;
-}
-  }
-/* newly added 3 */
-
-
-/* newly added 5 */
+/* complete checkbox part */
 .complete-checkbox[disabled],
   .complete-checkbox[disabled] + label {
     cursor: not-allowed;
     opacity: 0.5;
-}
-
-.material-title {
-    font-size: 1.8em;
-    margin: 1em 0;
 }
 
 .complete-checkbox {
@@ -296,8 +203,24 @@ span {
     vertical-align: middle;
     cursor: pointer;
 }
-  
-/* newly added 5 */
 
+/* button part */
+.button {
+  left: 0;
+  right: 0;
+  top: 50%;
+  margin: 0 20px;
+  width: 25%;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  color: #fff;
+  background: #2e39a0;
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid #292783;
+  transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+/* newly added 6 */
 @media only screen and (max-width: 600px) {
 }
