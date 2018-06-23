@@ -202,6 +202,10 @@
         })
     };
 
+    /**
+     * replace the content of li item with a input widget
+     * @param {DOM element} item the todo item (li) that will be edit upon
+     */
     TodoView.prototype.makeItemEditable = function (item) {
         var self = this;
         var box = item.childNodes[0];
@@ -238,6 +242,11 @@
         });
     };
 
+    /**
+     * change the items according to the filter type
+     * @param {string} filterType filter type can be 'all', 'active', or 'completed'
+     * @param {function} showAllHandler the handler to show all items on page, from Controller
+     */
     TodoView.prototype.filter = function (filterType, showAllHandler) {
         var self = this;
         var refreshAll = function () {
@@ -260,6 +269,10 @@
         }
     };
 
+    /**
+     * switch the tab when clicked
+     * @param {DOM element} target the tab widget clicked upon
+     */
     TodoView.prototype.switchTab = function (target) {
         $all('.tab').forEach(function (tab) {
             if (tab.classList.contains('selected')) {
@@ -299,11 +312,15 @@
         localStorage.setItem('todo', JSON.stringify(this.todoItems));
     }
 
+    /**
+     * return all the items as an array
+     */
     TodoModel.prototype.getAllItems = function () {
         // return a copy of the todo items
         // this is actually not so meaningful, as you can still access this.todoItems
         return this.todoItems.slice();
     };
+
 
     TodoModel.prototype.deleteItem = function (itemText) {
         var i = 0;
@@ -316,6 +333,11 @@
         this.store();
     };
 
+    /**
+     * change the complete status of an item
+     * @param {string} itemText the content of an item, which is used to locate the item
+     * @param {boolean} complete the item 
+     */
     TodoModel.prototype.changeItemComplete = function (itemText, complete) {
         var i = 0;
         for (i = 0; i < this.todoItems.length; i++) {
@@ -367,6 +389,11 @@
 
 
 
+    /**
+     * the controller for Todo app
+     * @param {TodoView} view the layer that is responsible for the page
+     * @param {TodoModel} model the layer that is responsible for the storage and data operation
+     */
     function TodoController(view, model) {
         var self = this;
         self.view = view;
@@ -424,6 +451,9 @@
         self.show();
     };
 
+    /**
+     * read data from model and show on page
+     */
     TodoController.prototype.show = function () {
         this.view.showAll(this.model.getAllItems());
     }

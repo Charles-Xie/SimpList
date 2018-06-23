@@ -228,9 +228,11 @@ label {
     transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
+/* the selected tab */
 .selected {
     background: #2e39a0;
 }
 
+/* not used eventually */
 @media only screen and (max-width: 600px) {
 }
