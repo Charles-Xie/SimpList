@@ -34,6 +34,10 @@ Note that it can not run on PC browser because I use the event of touch, which i
 1. complete one item
 2. complete all items or set all to unfinished status
 
+#### Local Storage
+
+1. use localStorage to keep the data
+
 ### High-level
 
 1. edit the information of an item (by swipe right)
