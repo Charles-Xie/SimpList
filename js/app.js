@@ -12,9 +12,6 @@
         this.swipeRightHandler = null;
         this.editDoneHandler = null;
         this.toggleCompleteRecord = true;
-
-        // put the item being edited
-        this.editedItem = null;
     };
 
     /**
@@ -58,6 +55,15 @@
             case 'edit':
                 self.swipeRightHandler = handler;
                 self.editDoneHandler = callback;
+                break;
+            case 'filter':
+                $all('.tab').forEach(function (tab) {
+                    tab.addEventListener('click', function (event) {
+                        // console.log(event.target.textContent);
+                        handler(event.target.textContent);
+                        self.switchTab(event.target);
+                    });
+                });
                 break;
         }
     };
@@ -178,11 +184,18 @@
         });
     };
 
-    TodoView.prototype.removeCompleted = function () {
+    /**
+     * remove completed items by default, active items if specified
+     * @param {boolean} completedOrActive remove completed or active from view
+     */
+    TodoView.prototype.removeCompleted = function (completedOrActive) {
+        if (completedOrActive == undefined) {
+            completedOrActive = true;
+        }
         var self = this;
         $all('.complete-checkbox').forEach(function (box) {
-            if (box.checked === true) {
-                console.log(box.parentElement.textContent);
+            if (box.checked === completedOrActive) {
+                // console.log(box.parentElement.textContent);
                 // remove element
                 self.todoList.removeChild(box.parentElement);
             }
@@ -225,7 +238,36 @@
         });
     };
 
+    TodoView.prototype.filter = function (filterType, showAllHandler) {
+        var self = this;
+        var refreshAll = function () {
+            $all('.todo-item').forEach(function (item) {
+                self.todoList.removeChild(item);
+            });
+            showAllHandler();
+        };
+        if (filterType === 'all') {
+            refreshAll();
+        }
+        else if (filterType === 'active') {
+            refreshAll();
+            // remove all completed only on view
+            this.removeCompleted();
+        }
+        else if (filterType === 'completed') {
+            refreshAll();
+            this.removeCompleted(false);
+        }
+    };
 
+    TodoView.prototype.switchTab = function (target) {
+        $all('.tab').forEach(function (tab) {
+            if (tab.classList.contains('selected')) {
+                tab.classList.remove('selected');
+            }
+        });
+        target.classList.add('selected');
+    };
 
 
 
@@ -373,9 +415,18 @@
             }
         );
 
+        self.view.bind('filter', function (filterType) {
+            self.view.filter(filterType, function () {
+                self.show();
+            });
+        });
 
-        self.view.showAll(self.model.getAllItems());
+        self.show();
     };
+
+    TodoController.prototype.show = function () {
+        this.view.showAll(this.model.getAllItems());
+    }
 
     function TodoMVC() {
         this.view = new TodoView();

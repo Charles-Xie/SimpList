@@ -10,11 +10,8 @@ body {
 
 /* basic stylings */
 .container {
-    /* font-family: 'Roboto'; */
-    /* width:600px;  */
     margin: 30px auto 0;
     padding: 10px 50px 50px;
-    /* text-align: center; */
 }
 
 h1 {
@@ -28,9 +25,6 @@ h1 {
     width: 90%;
 }
 
-/* hr {
-    color: #757575;
-} */
 .footer a {
     color: #53B2C8;
 }
@@ -39,7 +33,6 @@ h1 {
 .group {
     position: relative;
     margin-bottom: 45px;
-    /* text-align: center; */
     display: inline-block;
     width: 85%;
 }
@@ -207,21 +200,36 @@ label {
 
 /* button part */
 .button {
-  left: 0;
-  right: 0;
-  top: 50%;
-  margin: 0 20px;
-  width: 25%;
-  height: 50px;
-  line-height: 50px;
-  text-align: center;
-  color: #fff;
-  background: #2e39a0;
-  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.3);
-  border-bottom: 1px solid #292783;
-  transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+    margin: 0 20px;
+    width: 25%;
+    height: 50px;
+    line-height: 50px;
+    color: #fff;
+    background: #2e39a0;
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid #292783;
+    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
-/* newly added 6 */
+.operation {
+    margin: 5px 0 15px 0;
+}
+
+.tab {
+    margin: 0;
+    width: 25%;
+    height: 50px;
+    line-height: 50px;
+    color: #fff;
+    background: #5b5d77;
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid #292783;
+    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.selected {
+    background: #2e39a0;
+}
+
 @media only screen and (max-width: 600px) {
 }
