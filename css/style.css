@@ -23,6 +23,7 @@ h1 {
     margin-top: 4rem;
     display: inline-block;
     width: 90%;
+    line-height: 25px;
 }
 
 .footer a {
